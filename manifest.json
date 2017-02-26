@@ -15,6 +15,15 @@
     "newtab": "blank.html"
   },
   "author": "Davide Francesco Merico",
+  "background": {
+    "persitent": false
+  },
+  "chrome_ui_overrides" : {
+    "bookmarks_ui": {
+      "remove_button": "true",
+      "remove_bookmark_shortcut": "true"
+    }
+  },
   "permissions": [
     "bookmarks", "history", "tabs", "sessions"
   ]
