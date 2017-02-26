@@ -2,8 +2,7 @@
   "manifest_version": 2,
   "name": "StartPanels",
   "description": "Start page with organized panels to improve your productivity looking at the right link in few seconds",
-  "version": "0.1",
-  "default_locale": "en",
+  "version": "0.2",
   "page_action": {
     "default_icon": {
       "16": "images/icon16.png",
@@ -17,12 +16,6 @@
   "author": "Davide Francesco Merico",
   "background": {
     "persitent": false
-  },
-  "chrome_ui_overrides" : {
-    "bookmarks_ui": {
-      "remove_button": "true",
-      "remove_bookmark_shortcut": "true"
-    }
   },
   "permissions": [
     "bookmarks", "history", "tabs", "sessions"
