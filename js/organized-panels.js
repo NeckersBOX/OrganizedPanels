@@ -35,6 +35,13 @@ const addPanel = (type, title, links) => {
   panelDOM.appendChild (panelTitleDOM);
   panelDOM.appendChild (panelListDOM);
   document.getElementById ('container').appendChild (panelDOM);
+
+  /* masonry reload */
+  const msnry = new Masonry (document.getElementById ('container'), {
+    itemSelector: '.panel',
+    fitWidth: true,
+    gutter: 16
+  });
 };
 
 /* Serialize the bookmarks tree supplied by chrome.bookmarks.getTree ()
