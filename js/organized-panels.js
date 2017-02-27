@@ -81,7 +81,7 @@ const showHistory = historyItems =>
     formattedHtml +
     '<li>' +
     ' <a target="_blank" href="' + link.url + '">' +
-      (link.title.length ? link.title : link.url) +
+      ((link.hasOwnProperty ('title') && link.title.length) ? link.title : link.url) +
     '</a>' +
     '</li>', ''
   ));
@@ -92,7 +92,7 @@ const showClosedTabs = closedTabs =>
     formattedHtml +
     '<li>' +
     ' <a target="_blank" href="' + closedTab.tab.url + '">' +
-      (closedTab.tab.title.length ? closedTab.tab.title : closedTab.tab.url) +
+      ((closedTab.tab.title.hasOwnProperty ('length') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url) +
     '</a>' +
     '</li>', ''
   ));
