@@ -92,7 +92,7 @@ const showClosedTabs = closedTabs =>
     formattedHtml +
     '<li>' +
     ' <a target="_blank" href="' + closedTab.tab.url + '">' +
-      ((closedTab.tab.title.hasOwnProperty ('length') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url) +
+      ((closedTab.tab.hasOwnProperty ('title') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url) +
     '</a>' +
     '</li>', ''
   ));
