@@ -16,6 +16,6 @@
     "persitent": false
   },
   "permissions": [
-    "bookmarks", "history", "sessions"
+    "bookmarks", "history", "sessions", "tabs"
   ]
 }

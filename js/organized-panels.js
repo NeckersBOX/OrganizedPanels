@@ -88,7 +88,7 @@ const showHistory = historyItems =>
 
 /* Add the closed tabs panel */
 const showClosedTabs = closedTabs =>
-  addPanel ('closed-tabs', 'Closed Tabs', closedTabs.reduce ((formattedHtml, closedTab) =>
+  addPanel ('closed-tabs', 'Closed Tabs', closedTabs.slice (10).reduce ((formattedHtml, closedTab) =>
     formattedHtml +
     '<li>' +
     ' <a target="_blank" href="' + closedTab.tab.url + '">' +
