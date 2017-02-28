@@ -7,6 +7,9 @@ document.addEventListener ('DOMContentLoaded', () => {
   const themeElem = document.getElementsByClassName ('select-theme')[0];
 
   chrome.storage.sync.get ("theme", values => {
+    if ( typeof values.theme === 'undefined' )
+      return false;
+
     /* Restore saved theme */
     document.getElementById ('theme-stylesheet').setAttribute ('href', 'css/' + values.theme + '.css')
 

@@ -26,6 +26,13 @@ const addPanel = (type, title, links) => {
   const panelDOM = document.createElement ('div');
   panelDOM.className = 'panel ' + type;
 
+  if ( type === 'bookmark' ) {
+    const removePanelDOM = document.createElement ('span');
+
+    removePanelDOM.innerText = 'x';
+    panelDOM.appendChild (removePanelDOM);
+  }
+
   const panelTitleDOM = document.createElement ('h1');
   panelTitleDOM.innerText = title;
 
@@ -95,7 +102,8 @@ const showHistory = historyItems =>
 
 /* Add the closed tabs panel */
 const showClosedTabs = closedTabs =>
-  addPanel ('closed-tabs', 'Closed Tabs', closedTabs.slice (10).map (closedTab => ({
+  addPanel ('closed-tabs', 'Closed Tabs', closedTabs.filter (closedTab =>
+    closedTab.hasOwnProperty ('tab') && closedTab.tab.hasOwnProperty ('url')).slice (10).map (closedTab => ({
     url: closedTab.tab.url,
     title: (closedTab.tab.hasOwnProperty ('title') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url
   })));
