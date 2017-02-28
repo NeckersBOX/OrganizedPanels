@@ -6,6 +6,16 @@ body {
   background-color: #F5F5F5;
 }
 
+.panel>span {
+  color: #1c1c1c;
+  background-color: #FAFAFA;
+}
+
+.panel>span:hover, .panel>span:focus {
+  color: #1c1c1c;
+  background-color: #EEEEEE;
+}
+
 .panel>h1 {
   color: #1c1c1c;
 }

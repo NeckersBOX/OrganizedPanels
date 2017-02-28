@@ -22,14 +22,17 @@ document.addEventListener ('DOMContentLoaded', () => {
  *   when the extension load the "closed tabs" chrome will print an error because
  *   of this: https://developer.chrome.com/extensions/contentSecurityPolicy#relaxing-inline-script )
  */
-const addPanel = (type, title, links) => {
+const addPanel = (type, title, links, id) => {
   const panelDOM = document.createElement ('div');
   panelDOM.className = 'panel ' + type;
 
   if ( type === 'bookmark' ) {
     const removePanelDOM = document.createElement ('span');
 
-    removePanelDOM.innerText = 'x';
+    removePanelDOM.innerHTML = '&#x2715;';
+    removePanelDOM.className = 'remove-panel';
+    removePanelDOM.setAttribute ('data-ref', id);
+
     panelDOM.appendChild (removePanelDOM);
   }
 
@@ -69,7 +72,7 @@ const addPanel = (type, title, links) => {
 
 /* Serialize the bookmarks tree supplied by chrome.bookmarks.getTree ()
  * Each folder, and sub-folder, is pushed out from its context\node with
- * only name and children links.
+ * only name, id and children links.
  */
 const serializeBookmarks = bookmarkTreeNode => {
   let serialized = [];
@@ -78,7 +81,8 @@ const serializeBookmarks = bookmarkTreeNode => {
     if ( 'children' in bookmarkTreeNode[node] ) {
       serialized.push ({
         name: bookmarkTreeNode[node].title,
-        links: bookmarkTreeNode[node].children.filter (child => !child.hasOwnProperty ('children') && child.title.length)
+        links: bookmarkTreeNode[node].children.filter (child => !child.hasOwnProperty ('children') && child.title.length),
+        id: bookmarkTreeNode[node].id
       });
 
       serialized = serialized.concat (serializeBookmarks (bookmarkTreeNode[node].children));
@@ -89,9 +93,26 @@ const serializeBookmarks = bookmarkTreeNode => {
 };
 
 /* Add the bookmark panel */
-const showBookmark = bookmarkTreeNode => serializeBookmarks (bookmarkTreeNode).forEach (bookmark =>
-  addPanel ('bookmark', bookmark.name, bookmark.links.map (link => ({ url: link.url, title: link.title })))
-);
+const showBookmark = bookmarkTreeNode => chrome.storage.sync.get ("removed", values => {
+  let removed = [];
+
+  if ( typeof values.removed !== 'undefined' ) {
+    removed = JSON.parse (values.removed);
+  }
+
+  serializeBookmarks (bookmarkTreeNode).forEach (bookmark => {
+    if ( removed.indexOf (bookmark.id) !== -1 ) {
+      return;
+    }
+
+    addPanel ('bookmark', bookmark.name, bookmark.links.map (link => ({
+      url: link.url,
+      title: link.title
+    })), bookmark.id)
+  });
+
+  document.dispatchEvent (new Event ('change'));
+});
 
 /* Add the history panel */
 const showHistory = historyItems =>
@@ -102,8 +123,11 @@ const showHistory = historyItems =>
 
 /* Add the closed tabs panel */
 const showClosedTabs = closedTabs =>
-  addPanel ('closed-tabs', 'Closed Tabs', closedTabs.filter (closedTab =>
-    closedTab.hasOwnProperty ('tab') && closedTab.tab.hasOwnProperty ('url')).slice (10).map (closedTab => ({
-    url: closedTab.tab.url,
-    title: (closedTab.tab.hasOwnProperty ('title') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url
-  })));
+  addPanel ('closed-tabs', 'Closed Tabs', closedTabs
+    .filter (closedTab => closedTab.hasOwnProperty ('tab') && closedTab.tab.hasOwnProperty ('url'))
+    .slice (0, 10)
+    .map (closedTab => ({
+      url: closedTab.tab.url,
+      title: (closedTab.tab.hasOwnProperty ('title') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url
+    }))
+  );

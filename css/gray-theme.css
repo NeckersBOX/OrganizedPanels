@@ -10,6 +10,16 @@ body {
   color: #F5F5F5;
 }
 
+.panel>span {
+  color: #F5F5F5;
+  background-color: #333333;
+}
+
+.panel>span:hover, .panel>span:focus {
+  color: #F5F5F5;
+  background-color: #212121;
+}
+
 .panel>ul>li {
   background-color: #404040;
 }
