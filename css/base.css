@@ -42,6 +42,7 @@ body {
 .panel>h1 {
   font-family: sans-serif;
   font-size: 16px;
+  margin-top: 4px;
 }
 
 .panel>ul {
@@ -68,4 +69,18 @@ body {
 .panel>ul>li>a>span {
   position: relative;
   bottom: 3px;
+}
+
+.closed {
+  padding: 0 16px;
+}
+
+.closed>h1 {
+  margin-top: 0.67rem;
+}
+
+.closed>span {
+  margin-top: -32px;
+  padding-right: 3px;
+  height: 15px;
 }

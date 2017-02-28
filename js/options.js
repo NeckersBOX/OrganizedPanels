@@ -28,7 +28,9 @@ document.addEventListener ('DOMContentLoaded', () => {
 const watchDOM = () => {
   const removeDOM = document.getElementsByClassName ('remove-panel');
   const themeDOM = document.getElementsByClassName ('select-theme')[0];
+  const restoreDOM = document.getElementsByClassName ('restore-panel');
   let events = [];
+
   /* Watch Theme */
   events.push ({
     type: 'change',
@@ -42,6 +44,14 @@ const watchDOM = () => {
       type: 'click',
       target: removeDOM[j],
       listener: removeDOM[j].addEventListener ('click', removePanel, false)
+    });
+
+  /* Watch Panels Restore */
+  for ( let j = 0; j < restoreDOM.length; ++j )
+    events.push ({
+      type: 'click',
+      target: restoreDOM[j],
+      listener: restoreDOM[j].addEventListener ('click', restorePanel, false)
     });
 
   reloadMasonry ();
@@ -76,9 +86,21 @@ const removePanel = event => chrome.storage.sync.get ("removed", values => {
   removed.push (event.target.getAttribute ('data-ref'));
 
   chrome.storage.sync.set ({ removed: JSON.stringify (removed) });
-  const currentPanel = event.target.parentElement;
+  location.reload ();
+});
 
-  currentPanel.parentElement.removeChild (currentPanel);
+/* Restore the panel clicked and remove its id from the "removed" array */
+const restorePanel = event => chrome.storage.sync.get ("removed", values => {
+  let removed = [];
 
-  reloadMasonry ();
+  if ( typeof values.removed !== 'undefined' )
+    removed = JSON.parse (values.removed);
+
+  let indexPanel = removed.indexOf (event.target.getAttribute ('data-ref'));
+
+  if ( indexPanel != -1 )
+    removed.splice (indexPanel, 1);
+
+  chrome.storage.sync.set ({ removed: JSON.stringify (removed) });
+  location.reload ();
 });

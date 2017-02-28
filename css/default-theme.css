@@ -43,3 +43,11 @@ body {
 .history {
   background-color: #C8E6C9;
 }
+
+.closed {
+  background-color: #EEEEEE;
+}
+
+.closed>h1 {
+  color: #989898;
+}

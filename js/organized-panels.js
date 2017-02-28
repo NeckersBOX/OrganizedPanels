@@ -70,6 +70,25 @@ const addPanel = (type, title, links, id) => {
   });
 };
 
+/* Add a panel marked as closed */
+const addClosedPanel = (title, id) => {
+  const panelDOM = document.createElement ('div');
+  panelDOM.className = 'panel closed';
+
+  const panelTitleDOM = document.createElement ('h1');
+  panelTitleDOM.innerText = title;
+
+  const restorePanelDOM = document.createElement ('span');
+  restorePanelDOM.innerHTML = '&#x2795;';
+  restorePanelDOM.className = 'restore-panel';
+  restorePanelDOM.setAttribute ('data-ref', id);
+
+  panelDOM.appendChild (panelTitleDOM);
+  panelDOM.appendChild (restorePanelDOM);
+
+  document.getElementById ('container').appendChild (panelDOM);
+};
+
 /* Serialize the bookmarks tree supplied by chrome.bookmarks.getTree ()
  * Each folder, and sub-folder, is pushed out from its context\node with
  * only name, id and children links.
@@ -102,13 +121,14 @@ const showBookmark = bookmarkTreeNode => chrome.storage.sync.get ("removed", val
 
   serializeBookmarks (bookmarkTreeNode).forEach (bookmark => {
     if ( removed.indexOf (bookmark.id) !== -1 ) {
-      return;
+      addClosedPanel (bookmark.name, bookmark.id);
     }
-
-    addPanel ('bookmark', bookmark.name, bookmark.links.map (link => ({
-      url: link.url,
-      title: link.title
-    })), bookmark.id)
+    else {
+      addPanel ('bookmark', bookmark.name, bookmark.links.map (link => ({
+        url: link.url,
+        title: link.title
+      })), bookmark.id);
+    }
   });
 
   document.dispatchEvent (new Event ('change'));
