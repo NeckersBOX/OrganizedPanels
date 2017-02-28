@@ -57,6 +57,15 @@ body {
   color: #EEEEEE;
 }
 
+.panel>ul>li>a>img {
+  margin-right: 4px;
+}
+
+.panel>ul>li>a>span {
+  position: relative;
+  bottom: 3px;
+}
+
 .bookmark {
   background-color: #795548;
 }

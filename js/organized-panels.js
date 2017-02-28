@@ -30,7 +30,23 @@ const addPanel = (type, title, links) => {
   panelTitleDOM.innerText = title;
 
   const panelListDOM = document.createElement ('ul');
-  panelListDOM.innerHTML = links;
+  links.forEach (link => {
+    let listDOM = document.createElement ('li');
+    let linkDOM = document.createElement ('a');
+    let iconDOM = document.createElement ('img');
+    let spanDOM = document.createElement ('span');
+
+    linkDOM.setAttribute ('href', link.url);
+
+    iconDOM.setAttribute ('src', 'chrome://favicon/' + link.url);
+    linkDOM.appendChild (iconDOM);
+
+    spanDOM.innerText = link.title;
+    linkDOM.appendChild (spanDOM);
+
+    listDOM.appendChild (linkDOM);
+    panelListDOM.appendChild (listDOM);
+  });
 
   panelDOM.appendChild (panelTitleDOM);
   panelDOM.appendChild (panelListDOM);
@@ -67,32 +83,19 @@ const serializeBookmarks = bookmarkTreeNode => {
 
 /* Add the bookmark panel */
 const showBookmark = bookmarkTreeNode => serializeBookmarks (bookmarkTreeNode).forEach (bookmark =>
-  addPanel ('bookmark', bookmark.name, bookmark.links.reduce ((formattedHtml, link) =>
-      formattedHtml +
-      '<li>' +
-      ' <a href="' + link.url + '">' + link.title + '</a>' +
-      '</li>', ''
-  ))
+  addPanel ('bookmark', bookmark.name, bookmark.links.map (link => ({ url: link.url, title: link.title })))
 );
 
 /* Add the history panel */
 const showHistory = historyItems =>
-  addPanel ('history', 'Browser History', historyItems.reduce ((formattedHtml, link) =>
-    formattedHtml +
-    '<li>' +
-    ' <a href="' + link.url + '">' +
-      ((link.hasOwnProperty ('title') && link.title.length) ? link.title : link.url) +
-    '</a>' +
-    '</li>', ''
-  ));
+  addPanel ('history', 'Browser History', historyItems.map (link => ({
+    url: link.url,
+    title: (link.hasOwnProperty ('title') && link.title.length) ? link.title : link.url
+  })));
 
 /* Add the closed tabs panel */
 const showClosedTabs = closedTabs =>
-  addPanel ('closed-tabs', 'Closed Tabs', closedTabs.slice (10).reduce ((formattedHtml, closedTab) =>
-    formattedHtml +
-    '<li>' +
-    ' <a href="' + closedTab.tab.url + '">' +
-      ((closedTab.tab.hasOwnProperty ('title') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url) +
-    '</a>' +
-    '</li>', ''
-  ));
+  addPanel ('closed-tabs', 'Closed Tabs', closedTabs.slice (10).map (closedTab => ({
+    url: closedTab.tab.url,
+    title: (closedTab.tab.hasOwnProperty ('title') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url
+  })));
