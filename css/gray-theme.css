@@ -1,0 +1,35 @@
+body {
+  background-color: #424242;
+}
+
+.panel {
+  background-color: #212121;
+}
+
+.panel>h1 {
+  color: #F5F5F5;
+}
+
+.panel>ul>li {
+  background-color: #404040;
+}
+
+.panel>ul>li>a {
+  color: #F5F5F5;
+}
+
+.panel>ul>li>a:hover, .panel>ul>li>a:focus {
+  color: #EEEEEE;
+}
+
+.bookmark {
+  background-color: #797979;
+}
+
+.closed-tabs {
+  background-color: #545454;
+}
+
+.history {
+  background-color: #292929;
+}
