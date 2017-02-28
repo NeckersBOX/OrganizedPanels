@@ -14,7 +14,7 @@ document.addEventListener ('DOMContentLoaded', () => {
   chrome.sessions.getRecentlyClosed ({
     maxResults: 10
   }, showClosedTabs);
-});
+}, false);
 
 /* Add the panel in the 'container' div, working a bit directly with the DOM.
  * This function replace the dependency from jquery's append () function too.
@@ -70,7 +70,7 @@ const showBookmark = bookmarkTreeNode => serializeBookmarks (bookmarkTreeNode).f
   addPanel ('bookmark', bookmark.name, bookmark.links.reduce ((formattedHtml, link) =>
       formattedHtml +
       '<li>' +
-      ' <a target="_blank" href="' + link.url + '">' + link.title + '</a>' +
+      ' <a href="' + link.url + '">' + link.title + '</a>' +
       '</li>', ''
   ))
 );
@@ -80,7 +80,7 @@ const showHistory = historyItems =>
   addPanel ('history', 'Browser History', historyItems.reduce ((formattedHtml, link) =>
     formattedHtml +
     '<li>' +
-    ' <a target="_blank" href="' + link.url + '">' +
+    ' <a href="' + link.url + '">' +
       ((link.hasOwnProperty ('title') && link.title.length) ? link.title : link.url) +
     '</a>' +
     '</li>', ''
@@ -91,7 +91,7 @@ const showClosedTabs = closedTabs =>
   addPanel ('closed-tabs', 'Closed Tabs', closedTabs.slice (10).reduce ((formattedHtml, closedTab) =>
     formattedHtml +
     '<li>' +
-    ' <a target="_blank" href="' + closedTab.tab.url + '">' +
+    ' <a href="' + closedTab.tab.url + '">' +
       ((closedTab.tab.hasOwnProperty ('title') && closedTab.tab.title.length) ? closedTab.tab.title : closedTab.tab.url) +
     '</a>' +
     '</li>', ''

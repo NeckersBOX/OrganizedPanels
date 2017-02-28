@@ -1,13 +1,20 @@
 <html>
   <head>
     <link rel="icon" href="images/favicon.ico" />
-    <link rel="stylesheet" href="css/default-theme.css" />
+    <link id="theme-stylesheet" rel="stylesheet" href="css/default-theme.css" />
     <title>Start Panels</title>
     <script type="text/javascript" src="js/masonry.pkgd.min.js"></script>
     <script type="text/javascript" src="js/organized-panels.js"></script>
+    <script type="text/javascript" src="js/options.js"></script>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
   </head>
   <body>
+    <div class="menu">
+      <select class="select-theme">
+        <option value="default-theme">Default Theme</option>
+        <option value="dark-theme">Dark Theme</option>
+      </select>
+    </div>
     <div id="container">
     </div>
   </body>
