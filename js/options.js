@@ -6,9 +6,19 @@
 document.addEventListener ('DOMContentLoaded', () => {
   const themeElem = document.getElementsByClassName ('select-theme')[0];
 
+  chrome.storage.sync.get ("theme", values => {
+    /* Restore saved theme */
+    document.getElementById ('theme-stylesheet').setAttribute ('href', 'css/' + values.theme + '.css')
+
+    /* Change select option */
+    themeElem.value = values.theme;
+  });
+
   themeElem.onchange = changeTheme;
 });
 
 /* Replace the css stylesheet with the theme choosen corrisponding file */
-const changeTheme = event =>
+const changeTheme = event => {
   document.getElementById ('theme-stylesheet').setAttribute ('href', 'css/' + event.target.value + '.css');
+  chrome.storage.sync.set ({ theme: event.target.value });
+};
